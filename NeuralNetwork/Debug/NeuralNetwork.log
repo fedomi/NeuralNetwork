@@ -1,0 +1,8 @@
+﻿  NeuralNetwork.cpp
+c:\users\nando\source\repos\neuralnetwork\neuralnetwork\neuralnetwork.cpp(49): warning C4018: '<': no coinciden signed/unsigned
+c:\users\nando\source\repos\neuralnetwork\neuralnetwork\neuralnetwork.cpp(68): warning C4018: '<': no coinciden signed/unsigned
+c:\users\nando\source\repos\neuralnetwork\neuralnetwork\neuralnetwork.cpp(86): warning C4018: '<': no coinciden signed/unsigned
+c:\users\nando\source\repos\neuralnetwork\neuralnetwork\neuralnetwork.cpp(105): warning C4018: '<': no coinciden signed/unsigned
+  main.cpp
+  Generando código...
+  NeuralNetwork.vcxproj -> C:\Users\Nando\source\repos\NeuralNetwork\Debug\NeuralNetwork.exe
