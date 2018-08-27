@@ -15,20 +15,27 @@ NeuralNetwork::~NeuralNetwork()
 void NeuralNetwork::CreateLayers() {
 	// TODO: Change weight initialization to a binomial distribution
 	
-	vector<float> default_weights, default_weights_out;	// For testing purposes
-	default_weights.push_back(0.5);
-	default_weights_out.push_back(0.5);
-	default_weights_out.push_back(0.5);
-	default_weights_out.push_back(0.5);
+	default_random_engine generator;
+	binomial_distribution<int> distribution(1000, 0.5);
+	int number = distribution(generator);
+
+	vector<float> default_weights_in, default_weights_hid, default_weights_out;	// For testing purposes
+	default_weights_in.push_back(distribution(generator)/1000);
+	
+	default_weights_hid.push_back(distribution(generator) / 1000);
+
+	default_weights_out.push_back(distribution(generator) / 1000);
+	default_weights_out.push_back(distribution(generator) / 1000);
+	default_weights_out.push_back(distribution(generator) / 1000);
 
 	
 	for (int i = 0; i < NI; i++) {
-		Neuron n(alpha, default_weights, -1);
+		Neuron n(alpha, default_weights_in, -1);
 		inputLayer.push_back(n);
 	}
 
 	for (int i = 0; i < NH; i++) {
-		Neuron n(alpha, default_weights, -1);
+		Neuron n(alpha, default_weights_hid, -1);
 		hiddenLayer.push_back(n);
 	}
 
@@ -49,7 +56,7 @@ void NeuralNetwork::Train(vector<float> input, vector<float> target) {
 		for (int i = 0; i < input.size(); i++) {
 			out = PropagateValue(input[i]);
 			errors.push_back(out - target[i]);
-			UpdateWeights();
+			UpdateWeights(target[i]);
 		}
 		mse = MSE();
 		cout << "Mean Squared Error: " << mse << endl;
@@ -92,11 +99,11 @@ float NeuralNetwork::PropagateValue(float value) {
 	return result;
 }
 
-void NeuralNetwork::UpdateWeights(){
+void NeuralNetwork::UpdateWeights(float target){
 	vector<float> vin, vhid, vout;		// These are the values passed as entries in each of the three layers
 	
 	
-	float gk = outputLayer[0].Gradient(1);
+	float gk = outputLayer[0].Gradient(target);
 	outputLayer[0].UpdateWeights(gk);
 	//cout << "Error gradient at output neuron: " << gk << endl;
 										
@@ -109,8 +116,8 @@ void NeuralNetwork::UpdateWeights(){
 		vhid.push_back(gj);
 	}
 	
-	//float gi = inputLayer[0].Gradient(vhid);
-	//inputLayer[0].UpdateWeights(gi);
+	float gi = inputLayer[0].Gradient(vhid);
+	inputLayer[0].UpdateWeights(gi);
 	
 }
 

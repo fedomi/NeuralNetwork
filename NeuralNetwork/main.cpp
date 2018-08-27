@@ -3,6 +3,9 @@
 #include <math.h>
 #include "Neuron.h"
 #include "NeuralNetwork.h"
+#include <fstream>
+#include <string>
+#include <utility>
 using namespace std;
 
 // Tests
@@ -11,11 +14,15 @@ void TestNetworkCreation();
 void TestInputPropagation();
 void TestWeightUpdate();
 void TestTrain();
+void TestRead();
+pair<vector<float>, vector<float>> ReadData(string file);
+
+
 
 int main() {
 	int c;
 
-	TestTrain();
+	TestRead();
 	cin >> c;
 	return 0;
 }
@@ -56,13 +63,14 @@ void TestInputPropagation() {
 // PASSED
 void TestWeightUpdate() {
 	NeuralNetwork nn;
+	float output = nn.PropagateValue(1);
 
-	cout << nn.PropagateValue(1) << endl;
-	nn.UpdateWeights();
+	cout << output << endl;
+	nn.UpdateWeights(1);
 
 }
 
-
+// PASSED
 void TestTrain() {
 	NeuralNetwork nn;
 	vector<float> input;
@@ -76,4 +84,45 @@ void TestTrain() {
 
 	nn.Train(input, target);
 
+}
+
+
+void TestRead() {
+	vector<float> TrainIn, TrainTarget, TestIn, TestTarget;
+	pair<vector<float>, vector<float>> r1, r2;
+	r1 = ReadData("sincTrain25.dt");
+	r2 = ReadData("sincValidate10.dt");
+	TrainIn = r1.first;
+	TrainTarget = r1.second;
+	TestIn = r2.first;
+	TestTarget = r2.second;
+
+}
+
+pair<vector<float>, vector<float>> ReadData(string file) {
+
+	ifstream input(file); //put your program together with thsi file in the same folder.
+	vector<float> in;
+	vector<float> target;
+
+	if (input.is_open()) {
+
+		while (!input.eof()) {
+			string numbers;
+			int data;
+			getline(input, numbers); //read number
+			string::size_type sz;     // alias of size_t
+
+			float i = stof(numbers, &sz);
+			float t = stof(numbers.substr(sz));
+			in.push_back(i);
+			target.push_back(t);
+		}
+
+	}
+
+	pair <vector<float>, vector<float>> result(in, target);
+	//result.first = input;
+	//result.second = target;
+	return result;
 }

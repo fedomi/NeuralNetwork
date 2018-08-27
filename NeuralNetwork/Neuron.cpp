@@ -72,7 +72,7 @@ float Neuron::Gradient(vector<float> gk)
 
 	for (int i = 0; i < gk.size(); i++)
 	{
-		res += w[i] * gk[i];
+		res += w[0] * gk[i];
 	}
 
 	res *= output * (1 - output);

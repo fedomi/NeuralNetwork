@@ -2,6 +2,7 @@
 #include <math.h>
 #include <vector>
 #include "Neuron.h"
+#include <random>
 #include<limits>
 using namespace std;
 
@@ -20,7 +21,7 @@ public:
 
 	// These methods must be private. They're here for testing
 	float PropagateValue(float input);	
-	void UpdateWeights();
+	void UpdateWeights(float target);
 private:
 	float alpha = 0.5;
 	float MSE_Threshold = 0.25;
